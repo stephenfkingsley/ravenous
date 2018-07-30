@@ -2,17 +2,19 @@ import apiKey from './secret.js';
 
 const Yelp = {
   search(term, location, sortBy) {
-      return fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=${this.TERM}&location=${this.LOCATION}&sort_by=${this.SORT_BY}`, {
+      return fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=${this.TER}&location=${this.LOCATION}&sort_by=${this.SORT_BY}`, {
         headers: {
           Authorization: `Bearer ${apiKey}`
         }
       }).then(response => {
-      if (response.ok) {
         console.log(response.json(), 'Test to see if fetch worked.');
+      if (response.ok) {
+        console.log('Test to see if fetch was ok.', response.json());
         return response.json();
       }
-      throw new Error('Request failed!');
-    }, networkError => console.log(networkError.message)).then(jsonResponse => {
+      //throw new Error('Request failed!');
+    }, networkError => console.log(networkError.message)).then(jsonResponse => { //issue is jsonResponse is undefined
+      console.log('This is the jsonResponse', jsonResponse);
       if (jsonResponse.businesses) {
         return jsonResponse.businesses.map(business => (
           {id: business.id,
